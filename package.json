@@ -15,6 +15,7 @@
     "build:pre": "rimraf dist/",
     "build:compile": "tsc && tsc-alias",
     "preinstall": "npx -y only-allow pnpm",
+    "vercel-build": "pnpm run build",
     "migration:create": "pnpm exec mikro-orm migration:create",
     "migration:up": "pnpm exec mikro-orm migration:up",
     "migration:down": "pnpm exec mikro-orm migration:down"
