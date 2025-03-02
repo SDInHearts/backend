@@ -11,6 +11,23 @@ import { scopedLogger } from '@/services/logger';
 
 const log = scopedLogger('mw-backend');
 
+let app: any; // Store Fastify instance globally
+
+
+export default async function handler(req: any, res: any) {
+  if (!app) {
+    log.info("Initializing Fastify for Vercel...");
+    await setupRatelimits();
+    app = await setupFastify();
+    await setupMikroORM();
+    await setupMetrics(app);
+    await setupFastifyRoutes(app);
+  }
+
+  return app.ready().then(() => app.server.emit('request', req, res));
+}
+
+
 async function bootstrap(): Promise<void> {
   log.info(`App booting...`, {
     evt: 'setup',
